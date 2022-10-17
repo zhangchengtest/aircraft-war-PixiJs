@@ -5,6 +5,7 @@ class Enemy{
     }
     /* 普通敌机 */
     init (x,y, name){
+        
         // console.log(name)
         this.enemy = new PIXI.Sprite(PIXI.loader.resources[name].texture);
         // this.enemy =  new PIXI.Text(name);
@@ -14,7 +15,6 @@ class Enemy{
         this.enemy.vx = 0;
         this.enemy.coin = 2;
         this.enemy.health = 2;
-        this.enemy.animationSpeed = 0.6;
         this.enemy.width = 30 * 2;
         this.enemy.height = 30 * 2;
         // this.enemy.play();

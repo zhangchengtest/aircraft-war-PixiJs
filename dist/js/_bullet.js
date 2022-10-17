@@ -1,1 +1,37 @@
-"use strict";var _createClass=function(){function n(t,e){for(var l=0;l<e.length;l++){var n=e[l];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(t,n.key,n)}}return function(t,e,l){return e&&n(t.prototype,e),l&&n(t,l),t}}();function _classCallCheck(t,e){if(!(t instanceof e))throw new TypeError("Cannot call a class as a function")}var Bullet=function(){function t(){_classCallCheck(this,t),this.bullet=null}return _createClass(t,[{key:"init",value:function(t,e,l,n,i,r){var u=0<arguments.length&&void 0!==t?t:new PIXI.Sprite(PIXI.loader.resources["images/bullet.png"].texture),a=1<arguments.length&&void 0!==e?e:31,s=2<arguments.length&&void 0!==l?l:64,o=3<arguments.length&&void 0!==n?n:-18,h=4<arguments.length&&void 0!==i?i:-1,c=5<arguments.length&&void 0!==r?r:0;return this.bullet=u,this.bullet.width=a,this.bullet.height=s,this.bullet.vy=o,this.bullet.vx=h,this.bullet.rotation=c,this.bullet.isDest=!1,this.bullet}}]),t}();
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/* 子弹类 */
+var Bullet = function () {
+    function Bullet() {
+        _classCallCheck(this, Bullet);
+
+        this.bullet = null;
+    }
+
+    _createClass(Bullet, [{
+        key: 'init',
+        value: function init() {
+            var texture = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : new PIXI.Sprite(PIXI.loader.resources['images/bullet.png'].texture);
+            var w = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 62 / 2;
+            var h = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 128 / 2;
+            var y = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : -18;
+            var x = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : -1;
+            var r = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 0;
+
+            this.bullet = texture;
+            this.bullet.width = w;
+            this.bullet.height = h;
+            this.bullet.vy = y;
+            this.bullet.vx = x;
+            this.bullet.rotation = r;
+            this.bullet.isDest = false;
+            return this.bullet;
+        }
+    }]);
+
+    return Bullet;
+}();

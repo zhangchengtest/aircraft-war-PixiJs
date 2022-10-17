@@ -138,7 +138,7 @@ function calcRankingList(coin){
       })
       data.forEach((item,index)=>{
         if(item.flag && index!==0){
-          toast(`距前一名[<span style='color:#b00101'>${data[index-1].user}</span>][<span style='color:#b00101'>${data[index-1].coin - coin}</span>]分,<br/>继续加油!`);
+          toast(`距前一名[<span style='color:#b00101'>${data[index-1].username}</span>][<span style='color:#b00101'>${data[index-1].coin - coin}</span>]分,<br/>继续加油!`);
         }
         if(index===0){
           toast(`恭喜你,当前排名第一！超越第二[${coin - data[index+1].coin}]分`);

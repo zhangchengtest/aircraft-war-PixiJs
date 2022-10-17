@@ -1,61 +1,97 @@
-const DOMAIN = 'http://47.94.17.117:3000/game'; 
+// const DOMAIN = 'http://47.94.17.117:3000/game'; 
+const DOMAIN = 'http://api.punengshuo.com/api/game'; 
 $(function(){
 
-    
     getRankinglist();
     /* 设置用户名 */
     if(!localStorage.getItem('_userinfo')){
-        let name = '';
-        function getRandomChineseWord () {
-            var _rsl = "";
-            var _randomUniCode = Math.floor(Math.random() * (40870 - 19968) + 19968).toString(16);
-            eval("_rsl=" + '"\\u' + _randomUniCode + '"');
-            return _rsl;
-        }
-        for(let i=0;i<3;i++){
-            name+=getRandomChineseWord()
-        }
-        localStorage.setItem('_userinfo',name);
+        console.log('a')
+        $.get(DOMAIN+'/nickname', ( res, status) =>{
+            if(!status === 'success') return
+            let name = res.data;
+            localStorage.setItem('_userinfo',name);
+
+            $('#userName').val(localStorage.getItem('_userinfo'));
+            // 访问量
+            $.get(DOMAIN+'/visit?name='+localStorage.getItem('_userinfo'),(res)=>{})
+        })
+        
+    }else{
+        console.log('b')
+        $('#userName').val(localStorage.getItem('_userinfo'));
+        // 访问量
+        $.get(DOMAIN+'/visit?name='+localStorage.getItem('_userinfo'),(res)=>{})
     }
-    $('#userName').val(localStorage.getItem('_userinfo'));
+   
     // 点击修改用户名
     $('#submit').click(res=>{
-        $.get(DOMAIN+'/users/set?name='+$('#userName').val(), ( res, status) =>{
-            if(!status === 'success') return
-            if(res.data.use == 0){
-                localStorage.setItem('_userinfo',$('#userName').val())
-                _Main.userName = $('#userName').val()
-                toast('修改成功');
-            }else{
-                toast('用户名已使用');
+
+        $.ajax({
+            type: "POST",
+            url: DOMAIN+'/modifyUsername',
+            // The key needs to match your method's input parameter (case-sensitive).
+            data: JSON.stringify( {'name':$('#userName').val()}),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function(res){
+                if(res.code === 200 ){
+                    localStorage.setItem('_userinfo',$('#userName').val())
+                    _Main.userName = $('#userName').val()
+                    toast('修改成功');
+                }else{
+                    toast('用户名已使用');
+                }
+            },
+            error: function(errMsg) {
+               console.log(errMsg);
             }
-        })
+        });
+
     })
-    // 访问量
-    $.get(DOMAIN+'/users/visit?name='+localStorage.getItem('_userinfo'),(res)=>{})
+
 })
 function updataRankinglist(value,name,fn){
     if(value<1)return
-    $.post(DOMAIN+'/top/updata',{'name':name,'coin':value}, ( res, status) =>{
-        if(res.code === 1){
-            getRankinglist(function(data){
-                if(fn)fn(data);
-            });
+    // $.post(DOMAIN+'/savePlaneRank',
+    // {'username':name,'coin':value}, ( res, status) =>{
+    //     if(res.code === 1){
+    //         getRankinglist(function(data){
+    //             if(fn)fn(data);
+    //         });
+    //     }
+    // }, "application/json; charset=utf-8")
+
+    $.ajax({
+        type: "POST",
+        url: DOMAIN+'/savePlaneRank',
+        // The key needs to match your method's input parameter (case-sensitive).
+        data: JSON.stringify( {'username':name,'coin':value}),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function(res){
+            if(res.code === 200 ){
+                getRankinglist(function(data){
+                    if(fn)fn(data);
+                });
+            }
+        },
+        error: function(errMsg) {
+           console.log(errMsg);
         }
-    })
+    });
 }
 function getRankinglist(fn){
     /* 获取排行榜数据 */
-    $.get(DOMAIN+'/top/rankingList', (res, status) =>{
-        if(status === 'success' && res.code === 1){
+    $.get(DOMAIN+'/queryPlaneRank', (res, status) =>{
+        if(status === 'success' && res.code === 200){
             $('.ranking-list').html('');
             let wrapper_tr = '';
             res.data.forEach(( item ,index) => {
                 wrapper_tr += `<tr>
                     <td class='cup'>${index>2?index+1:''}</td>
-                    <td>${item.user}</td>
+                    <td>${item.username}</td>
                     <td>${item.coin}</td>
-                    <td>${item.date}</td>
+                    <td>${item.createDt}</td>
                 </tr>`;
             });
             sessionStorage.setItem('rankinglist',JSON.stringify(res.data));

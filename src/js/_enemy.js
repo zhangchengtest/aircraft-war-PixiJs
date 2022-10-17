@@ -4,17 +4,17 @@ class Enemy{
         this.enemy=null;
     }
     /* 普通敌机 */
-    init (x,y){
-        let frames = su.filmstrip('images/enemy1.png', 87, 123);
-        this.enemy = new PIXI.extras.AnimatedSprite(frames);
+    init (x,y, name){
+        // let frames = su.filmstrip('images/enemy1.png', 87, 123);
+        this.enemy =  new PIXI.Text(name);
         this.enemy.position.x = x;
         this.enemy.position.y = y;
-        this.enemy.vy = 1;
+        this.enemy.vy = 2;
         this.enemy.vx = 0;
         this.enemy.coin = 2;
         this.enemy.health = 2;
         this.enemy.animationSpeed = 0.6;
-        this.enemy.play();
+        // this.enemy.play();
         return this.enemy;
     }
     boss (x,y){

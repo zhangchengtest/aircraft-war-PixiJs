@@ -12,8 +12,8 @@ const { series, parallel, task, src, dest, watch } = require('gulp'),
     del = require('del'), // 清空指定文件夹
     open = require('gulp-open'),
     ip = require('ip'), // 本地IP
-    host = ip.address(),
-    // host = 'localhost',
+    // host = ip.address(),
+    host = '192.168.75.240',
     port = '8888',
 
     app = {  // 定义目录
@@ -37,7 +37,7 @@ task('js', function () {
         .pipe(babel({
             presets: ['babel-preset-env']
         }))
-        .pipe(uglify())
+        // .pipe(uglify())
         .pipe(dest(app.distPath + 'js'))
         .pipe(connect.reload())
 })

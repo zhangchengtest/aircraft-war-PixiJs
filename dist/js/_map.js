@@ -1,1 +1,24 @@
-"use strict";var _createClass=function(){function n(e,t){for(var a=0;a<t.length;a++){var n=t[a];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}return function(e,t,a){return t&&n(e.prototype,t),a&&n(e,a),e}}();function _classCallCheck(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var Map=function(){function e(){_classCallCheck(this,e),this.map=null}return _createClass(e,[{key:"init",value:function(){return this.map=new PIXI.extras.TilingSprite(PIXI.loader.resources["images/map2.jpg"].texture,$(".app").width(),$(".app").height()),this.map}}]),e}();
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/* 地图类 */
+var Map = function () {
+    function Map() {
+        _classCallCheck(this, Map);
+
+        this.map = null;
+    }
+
+    _createClass(Map, [{
+        key: 'init',
+        value: function init() {
+            this.map = new PIXI.extras.TilingSprite(PIXI.loader.resources['images/map2.jpg'].texture, $('.app').width(), $('.app').height());
+            return this.map;
+        }
+    }]);
+
+    return Map;
+}();

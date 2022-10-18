@@ -195,8 +195,8 @@ var Main = function () {
                 _this2.bulletArr.forEach(function (bullet) {
                     if (item.health === 0) return;
                     if (hitTestRectangle(bullet, item)) {
-                        // this.ParticleContainer.removeChild(bullet);
-                        // this.container.removeChild(item);
+                        _this2.ParticleContainer.removeChild(bullet);
+                        _this2.container.removeChild(item);
                         bullet.isDest = true;
                         item.health -= 1;
                     }

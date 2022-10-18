@@ -192,8 +192,8 @@ class Main{
             this.bulletArr.forEach( bullet => {
                 if(item.health === 0) return;
                 if(hitTestRectangle(bullet,item)){
-                    // this.ParticleContainer.removeChild(bullet);
-                    // this.container.removeChild(item);
+                    this.ParticleContainer.removeChild(bullet);
+                    this.container.removeChild(item);
                     bullet.isDest = true;
                     item.health -= 1;
                 }

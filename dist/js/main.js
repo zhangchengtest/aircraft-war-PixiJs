@@ -17,8 +17,8 @@ function load() {
     });
     su = new SpriteUtilities(PIXI);
     PIXI.loader.add(['images/snow.png', //雪花图
-    // 'images/map.jpg',  //森林地图
-    // 'images/map1.jpg', //沙漠图
+    'images/map.jpg', //森林地图
+    'images/map1.jpg', //沙漠图
     'images/map2.jpg', //冰河地图
     'images/ace.png', //飞机图
     'images/bullet.png', //子弹图
@@ -60,6 +60,8 @@ var Main = function () {
 
         this.map = null; //地图
         this.mapInit = null; //地图精灵
+
+        this.mapArr = ['images/map.jpg', 'images/map1.jpg', 'images/map2.jpg']; //
 
         this.aricraft = new Aricraft();
         this.aricraftSprite = this.aricraft.init();
@@ -232,8 +234,8 @@ var Main = function () {
             var _sonw = new Snow();
             for (var i = 0; i < 30; i++) {
                 var _item = _sonw.rendererSnow(Math.random() * $('.app').width() + 30, -50, Math.random() * 30, Math.random() * 1);
-                this.snowPond.push(_item);
-                this.container.addChild(_item);
+                // this.snowPond.push(_item)
+                // this.container.addChild(_item);
             }
             app.stage.addChild(this.container);
         }
@@ -244,7 +246,7 @@ var Main = function () {
         value: function createMap() {
             console.log('创建地图');
             this.map = new Map();
-            this.mapInit = this.map.init();
+            this.mapInit = this.map.init(this.mapArr[Math.round(Math.random() * (this.mapArr.length - 1))]);
             this.container.addChild(this.mapInit);
             /* this.mapInit.tint = 16391196;
             this.mapInit.tint = 16777215; //白色 */
@@ -453,7 +455,7 @@ var Main = function () {
             this.enemyArr.forEach(function (item, index) {
                 var x = px || item.x + item.width / 2 + 10; //子弹初始X轴位置
                 var y = py || item.y + item.height / 2 + 40; //子弹初始y轴位置
-                var texture = sprite || new PIXI.Sprite(PIXI.loader.resources['images/bullet2.png'].texture);
+                var texture = sprite || new PIXI.Sprite(PIXI.loader.resources['images/bullet0.png'].texture);
                 var rotation = Math.atan2(x - (_this7.aricraftSprite.x + _this7.aricraftSprite.width / 2 + 10), y - (_this7.aricraftSprite.y + _this7.aricraftSprite.height / 2));
                 var bulletX = bullet_X || -Math.cos(rotation) * 5;
                 var bulletY = bullet_Y || -Math.sin(rotation) * 5;

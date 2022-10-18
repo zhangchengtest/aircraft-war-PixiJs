@@ -3,9 +3,9 @@ class Map{
     constructor() {
         this.map = null;
     }
-    init (){
+    init (name){
         this.map = new PIXI.extras.TilingSprite(
-            PIXI.loader.resources['images/map2.jpg'].texture,
+            PIXI.loader.resources[name].texture,
             $('.app').width(),
             $('.app').height()
         );

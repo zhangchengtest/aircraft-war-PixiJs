@@ -10,8 +10,8 @@ function load(){
     su = new SpriteUtilities(PIXI);
     PIXI.loader.add([
         'images/snow.png', //雪花图
-        // 'images/map.jpg',  //森林地图
-        // 'images/map1.jpg', //沙漠图
+        'images/map.jpg',  //森林地图
+        'images/map1.jpg', //沙漠图
         'images/map2.jpg', //冰河地图
         'images/ace.png',  //飞机图
         'images/bullet.png',//子弹图
@@ -60,6 +60,10 @@ class Main{
         
         this.map = null; //地图
         this.mapInit = null;  //地图精灵
+
+        this.mapArr = ['images/map.jpg',
+        'images/map1.jpg',
+        'images/map2.jpg',]; //
 
         this.aricraft = new Aricraft();
         this.aricraftSprite = this.aricraft.init();
@@ -229,8 +233,8 @@ class Main{
                 Math.random()*30,
                 Math.random()*1
             )
-            this.snowPond.push(_item)
-            this.container.addChild(_item);
+            // this.snowPond.push(_item)
+            // this.container.addChild(_item);
         }
         app.stage.addChild(this.container);
        
@@ -239,7 +243,7 @@ class Main{
     createMap (){
         console.log('创建地图')
         this.map = new Map();
-        this.mapInit = this.map.init();
+        this.mapInit = this.map.init(this.mapArr[Math.round(Math.random()*(this.mapArr.length-1))]);
         this.container.addChild(this.mapInit);
         /* this.mapInit.tint = 16391196;
         this.mapInit.tint = 16777215; //白色 */
@@ -415,7 +419,7 @@ class Main{
         this.enemyArr.forEach( (item,index) => {
             let x = px || item.x + item.width/2 + 10; //子弹初始X轴位置
             let y = py || item.y + item.height/2 + 40;//子弹初始y轴位置
-            let texture = sprite || new PIXI.Sprite(PIXI.loader.resources['images/bullet2.png'].texture)
+            let texture = sprite || new PIXI.Sprite(PIXI.loader.resources['images/bullet0.png'].texture)
             let rotation = Math.atan2( x - (this.aricraftSprite.x+this.aricraftSprite.width / 2 + 10),y - (this.aricraftSprite.y+this.aricraftSprite.height/2) );
             let bulletX = bullet_X || -Math.cos(rotation)*5;
             let bulletY = bullet_Y || -Math.sin(rotation)*5;

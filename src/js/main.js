@@ -22,6 +22,13 @@ function load(){
         'images/boss.png',//敌机
         'images/beauty/b1.png',
         'images/beauty/b2.png',
+        'images/beauty/m1.png',
+        'images/beauty/m2.png',
+        'images/beauty/m3.png',
+        'images/beauty/m4.png',
+        'images/beauty/m5.png',
+        'images/beauty/m6.png',
+        'images/beauty/m7.png',
     ]).load(function(){
         document.querySelector('.app').appendChild(app.view);
         _Main = new Main();
@@ -59,11 +66,17 @@ class Main{
         this.aricraftHot = {x:null,y:null};
         this.bullet = new Bullet(); //子弹实例
         this.bulletArr = []; //子弹池
-        this.enemyName = ['images/beauty/b1.png','images/beauty/b2.png',]; //
+        this.enemyName = ['images/beauty/m1.png',
+                          'images/beauty/m2.png',
+                          'images/beauty/m3.png',
+                          'images/beauty/m4.png',
+                          'images/beauty/m5.png',
+                          'images/beauty/m6.png',
+                          'images/beauty/m7.png',]; //
 
         this.enemy = new Enemy(); //敌军实例
         this.enemyArr = []; //敌军池
-        this.enemyRefreshSpeed = 400; //敌军刷新速度
+        this.enemyRefreshSpeed = 1000; //敌军刷新速度
         this.integral = {
             value:0, //积分
             health:100 //健康值
@@ -91,7 +104,7 @@ class Main{
             }
         }
         this.timer = null; //敌军定时器
-        // this.enemy_bulletArr = [];//敌军子弹池
+        this.enemy_bulletArr = [];//敌军子弹池
 
         this.boom = new Boom(); //爆炸
         this.passIndex = 1; //关卡索引
@@ -188,22 +201,22 @@ class Main{
         })
 
         /* 敌军子弹 */
-        // this.enemy_bulletArr.forEach( (item,index) => {
-        //     item.position.x += item.vx;
-        //     item.position.y += item.vy;
-        //     if(item.position.y>$('.app').height()+20 || item.position.y<-20 || item.position.x>$('.app').width()+20 || item.position.x < -20){
-        //         this.enemy_bulletArr.splice(index,1);
-        //         this.container.removeChild(item);
-        //         this.ParticleContainer.removeChild(item);
-        //     }
-        //     if(!item.isDest&&(!this.aricraftSprite.isInvincible)&&hitTestRectangle(item,this.aricraftHot)){
-        //         item.isDest = true;
-        //         this.enemy_bulletArr.splice(index,1);
-        //         this.ParticleContainer.removeChild(item);
-        //         this.container.removeChild(item);
-        //         this.setHealth();
-        //     }
-        // })
+        this.enemy_bulletArr.forEach( (item,index) => {
+            item.position.x += item.vx;
+            item.position.y += item.vy;
+            if(item.position.y>$('.app').height()+20 || item.position.y<-20 || item.position.x>$('.app').width()+20 || item.position.x < -20){
+                this.enemy_bulletArr.splice(index,1);
+                this.container.removeChild(item);
+                this.ParticleContainer.removeChild(item);
+            }
+            if(!item.isDest&&(!this.aricraftSprite.isInvincible)&&hitTestRectangle(item,this.aricraftHot)){
+                item.isDest = true;
+                this.enemy_bulletArr.splice(index,1);
+                this.ParticleContainer.removeChild(item);
+                this.container.removeChild(item);
+                this.setHealth();
+            }
+        })
     }
     /* 创建雪花 */
     createSnow (){
@@ -287,7 +300,7 @@ class Main{
             let _enemy =  this.enemy.init(50+Math.random()*$('.app').width()-70,-150, this.enemyName[Math.round(Math.random()*(this.enemyName.length-1))]);
             this.container.addChild(_enemy);
             this.enemyArr.push(_enemy);
-            // this.fire();
+            this.fire();
         },time)
     }
     boundaryLimit (e){
@@ -313,21 +326,21 @@ class Main{
         calcRankingList(this.integral.value);
         /* 提升出怪速度 */
 
-        // if(this.integral.value % 50 === 0&& this.integral.value!==0){
-        //     clearInterval(this.timer);
-        //     toast(`第${this.passIndex}关boss即将上场`);
-        //     this.passIndex++;
-        //     setTimeout(()=>{
-        //         this.createBoss();
-        //     },3000)
-        // }else{
-             if(this.integral.value <5 || this.enemyRefreshSpeed < 100) return
-            if(this.integral.value % 50 === 0){
-                clearInterval(this.timer);
-                toast(`要加速了`);
-                this.createEnemy(this.enemyRefreshSpeed -= 28)
-            } 
-        // }
+        if(this.integral.value % 50 === 0&& this.integral.value!==0){
+            clearInterval(this.timer);
+            toast(`第${this.passIndex}关boss即将上场`);
+            this.passIndex++;
+            setTimeout(()=>{
+                this.createBoss();
+            },3000)
+        } else{
+            //  if(this.integral.value <5 || this.enemyRefreshSpeed < 100) return
+            // if(this.integral.value % 50 === 0){
+            //     clearInterval(this.timer);
+            //     toast(`要加速了`);
+            //     this.createEnemy(this.enemyRefreshSpeed -= 28)
+            // } 
+        }
     }
     /* 生命值状态显示 */
     setHealth (){
@@ -445,71 +458,71 @@ class Main{
         },1000)
     }
     /* boss战 */
-    // createBoss (){
-    //     let _enemy =  this.enemy.boss($('.app').width()/2 - 225/2,-150);
-    //     _enemy.tint = '0x'+Math.floor(Math.random() * 16777216).toString(16);
-    //     _enemy.isBoos = true;
-    //     setTimeout(()=>{
-    //         _enemy.vy = 0;
-    //         setTimeout(()=>{
-    //             _enemy.vx = 0.5;
-    //         },500)
-    //     },2400)
-    //     _enemy.timer = setInterval(() => {
-    //         let texture_A = PIXI.loader.resources['images/bullet2.png'].texture;
-    //         let texture_B = PIXI.loader.resources['images/bullet0.png'].texture;
-    //         var circle_bullet_A = this.bullet.init(
-    //             new PIXI.Sprite(texture_B),           //右侧主炮
-    //             20,20,4.1,-0.7,0
-    //         )  
-    //         circle_bullet_A.position.set(_enemy.x + _enemy.width/2 - 85,_enemy.y + _enemy.height/2 + 50);
-    //         this.enemy_bulletArr.push(circle_bullet_A);
-    //         this.container.addChild(circle_bullet_A);
+    createBoss (){
+        let _enemy =  this.enemy.boss($('.app').width()/2 - 225/2,-150);
+        _enemy.tint = '0x'+Math.floor(Math.random() * 16777216).toString(16);
+        _enemy.isBoos = true;
+        setTimeout(()=>{
+            _enemy.vy = 0;
+            setTimeout(()=>{
+                _enemy.vx = 0.5;
+            },500)
+        },2400)
+        _enemy.timer = setInterval(() => {
+            let texture_A = PIXI.loader.resources['images/bullet2.png'].texture;
+            let texture_B = PIXI.loader.resources['images/bullet0.png'].texture;
+            var circle_bullet_A = this.bullet.init(
+                new PIXI.Sprite(texture_B),           //右侧主炮
+                20,20,4.1,-0.7,0
+            )  
+            circle_bullet_A.position.set(_enemy.x + _enemy.width/2 - 85,_enemy.y + _enemy.height/2 + 50);
+            this.enemy_bulletArr.push(circle_bullet_A);
+            this.container.addChild(circle_bullet_A);
 
-    //         var circle_bullet_B = this.bullet.init(   //右侧副炮
-    //             new PIXI.Sprite(texture_A),
-    //             20,20,4.1,-0.3,0
-    //         )  
-    //         circle_bullet_B.position.set(_enemy.x + _enemy.width/2 - 35,_enemy.y + _enemy.height/2 + 60);
-    //         this.enemy_bulletArr.push(circle_bullet_B);
-    //         this.ParticleContainer.addChild(circle_bullet_B);
-
-
-    //         var circle_bullet_D = this.bullet.init(
-    //             new PIXI.Sprite(texture_A),           //左侧主炮
-    //             20,20,4.1,0.3,0
-    //         )  
-    //         circle_bullet_D.position.set(_enemy.x + _enemy.width/2 + 15,_enemy.y + _enemy.height/2 + 60);
-    //         this.enemy_bulletArr.push(circle_bullet_D);
-    //         this.ParticleContainer.addChild(circle_bullet_D);
+            var circle_bullet_B = this.bullet.init(   //右侧副炮
+                new PIXI.Sprite(texture_A),
+                20,20,4.1,-0.3,0
+            )  
+            circle_bullet_B.position.set(_enemy.x + _enemy.width/2 - 35,_enemy.y + _enemy.height/2 + 60);
+            this.enemy_bulletArr.push(circle_bullet_B);
+            this.ParticleContainer.addChild(circle_bullet_B);
 
 
-    //         var circle_bullet_C = this.bullet.init(
-    //             new PIXI.Sprite(texture_B),           //左侧主炮
-    //             20,20,4.1,0.7,0
-    //         )  
-    //         circle_bullet_C.position.set(_enemy.x + _enemy.width/2 + 65,_enemy.y + _enemy.height/2 + 50);
-    //         this.enemy_bulletArr.push(circle_bullet_C);
-    //         this.container.addChild(circle_bullet_C);
-    //     }, 600);
-    //     this.container.addChild(_enemy);
-    //     this.enemyArr.push(_enemy);
+            var circle_bullet_D = this.bullet.init(
+                new PIXI.Sprite(texture_A),           //左侧主炮
+                20,20,4.1,0.3,0
+            )  
+            circle_bullet_D.position.set(_enemy.x + _enemy.width/2 + 15,_enemy.y + _enemy.height/2 + 60);
+            this.enemy_bulletArr.push(circle_bullet_D);
+            this.ParticleContainer.addChild(circle_bullet_D);
 
-    //     /* 地图预警 */
-    //     let params = {
-    //         color:1
-    //     }
-    //     TweenMax.to(params,0.6,{
-    //         color:0.6,
-    //         repeat:3,
-    //         // ease:Bounce.easeOut,
-    //         onUpdate:()=>{
-    //             this.mapInit.alpha = params.color;
-    //         },
-    //         yoyo:true,
-    //         yoyoEase:true
-    //     });
-    // }
+
+            var circle_bullet_C = this.bullet.init(
+                new PIXI.Sprite(texture_B),           //左侧主炮
+                20,20,4.1,0.7,0
+            )  
+            circle_bullet_C.position.set(_enemy.x + _enemy.width/2 + 65,_enemy.y + _enemy.height/2 + 50);
+            this.enemy_bulletArr.push(circle_bullet_C);
+            this.container.addChild(circle_bullet_C);
+        }, 600);
+        this.container.addChild(_enemy);
+        this.enemyArr.push(_enemy);
+
+        /* 地图预警 */
+        let params = {
+            color:1
+        }
+        TweenMax.to(params,0.6,{
+            color:0.6,
+            repeat:3,
+            // ease:Bounce.easeOut,
+            onUpdate:()=>{
+                this.mapInit.alpha = params.color;
+            },
+            yoyo:true,
+            yoyoEase:true
+        });
+    }
 }
 
 // 重新开始

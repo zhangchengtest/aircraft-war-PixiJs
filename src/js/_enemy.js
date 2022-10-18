@@ -11,7 +11,7 @@ class Enemy{
         // this.enemy =  new PIXI.Text(name);
         this.enemy.position.x = x;
         this.enemy.position.y = y;
-        this.enemy.vy = 6;
+        this.enemy.vy = 1;
         this.enemy.vx = 0;
         this.enemy.coin = 2;
         this.enemy.health = 2;

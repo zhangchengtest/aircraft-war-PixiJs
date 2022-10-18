@@ -27,7 +27,7 @@ function load() {
     'images/enemy1.png', //敌军
     'images/boom.png', //爆炸
     'images/boss.png', //敌机
-    'images/beauty/b1.png', 'images/beauty/b2.png']).load(function () {
+    'images/beauty/b1.png', 'images/beauty/b2.png', 'images/beauty/m1.png', 'images/beauty/m2.png', 'images/beauty/m3.png', 'images/beauty/m4.png', 'images/beauty/m5.png', 'images/beauty/m6.png', 'images/beauty/m7.png']).load(function () {
         document.querySelector('.app').appendChild(app.view);
         _Main = new Main();
         _Main.init();
@@ -66,11 +66,11 @@ var Main = function () {
         this.aricraftHot = { x: null, y: null };
         this.bullet = new Bullet(); //子弹实例
         this.bulletArr = []; //子弹池
-        this.enemyName = ['images/beauty/b1.png', 'images/beauty/b2.png']; //
+        this.enemyName = ['images/beauty/m1.png', 'images/beauty/m2.png', 'images/beauty/m3.png', 'images/beauty/m4.png', 'images/beauty/m5.png', 'images/beauty/m6.png', 'images/beauty/m7.png']; //
 
         this.enemy = new Enemy(); //敌军实例
         this.enemyArr = []; //敌军池
-        this.enemyRefreshSpeed = 400; //敌军刷新速度
+        this.enemyRefreshSpeed = 1000; //敌军刷新速度
         this.integral = {
             value: 0, //积分
             health: 100 //健康值
@@ -98,7 +98,7 @@ var Main = function () {
             }
         };
         this.timer = null; //敌军定时器
-        // this.enemy_bulletArr = [];//敌军子弹池
+        this.enemy_bulletArr = []; //敌军子弹池
 
         this.boom = new Boom(); //爆炸
         this.passIndex = 1; //关卡索引
@@ -206,22 +206,22 @@ var Main = function () {
             });
 
             /* 敌军子弹 */
-            // this.enemy_bulletArr.forEach( (item,index) => {
-            //     item.position.x += item.vx;
-            //     item.position.y += item.vy;
-            //     if(item.position.y>$('.app').height()+20 || item.position.y<-20 || item.position.x>$('.app').width()+20 || item.position.x < -20){
-            //         this.enemy_bulletArr.splice(index,1);
-            //         this.container.removeChild(item);
-            //         this.ParticleContainer.removeChild(item);
-            //     }
-            //     if(!item.isDest&&(!this.aricraftSprite.isInvincible)&&hitTestRectangle(item,this.aricraftHot)){
-            //         item.isDest = true;
-            //         this.enemy_bulletArr.splice(index,1);
-            //         this.ParticleContainer.removeChild(item);
-            //         this.container.removeChild(item);
-            //         this.setHealth();
-            //     }
-            // })
+            this.enemy_bulletArr.forEach(function (item, index) {
+                item.position.x += item.vx;
+                item.position.y += item.vy;
+                if (item.position.y > $('.app').height() + 20 || item.position.y < -20 || item.position.x > $('.app').width() + 20 || item.position.x < -20) {
+                    _this2.enemy_bulletArr.splice(index, 1);
+                    _this2.container.removeChild(item);
+                    _this2.ParticleContainer.removeChild(item);
+                }
+                if (!item.isDest && !_this2.aricraftSprite.isInvincible && hitTestRectangle(item, _this2.aricraftHot)) {
+                    item.isDest = true;
+                    _this2.enemy_bulletArr.splice(index, 1);
+                    _this2.ParticleContainer.removeChild(item);
+                    _this2.container.removeChild(item);
+                    _this2.setHealth();
+                }
+            });
         }
         /* 创建雪花 */
 
@@ -320,7 +320,7 @@ var Main = function () {
                 var _enemy = _this4.enemy.init(50 + Math.random() * $('.app').width() - 70, -150, _this4.enemyName[Math.round(Math.random() * (_this4.enemyName.length - 1))]);
                 _this4.container.addChild(_enemy);
                 _this4.enemyArr.push(_enemy);
-                // this.fire();
+                _this4.fire();
             }, time);
         }
     }, {
@@ -341,6 +341,8 @@ var Main = function () {
     }, {
         key: 'setIntegral',
         value: function setIntegral(value) {
+            var _this5 = this;
+
             /*    if(this.integral.value === 10){
                    clearInterval(this.timer);
                    toast('boss即将上场')
@@ -351,21 +353,21 @@ var Main = function () {
             calcRankingList(this.integral.value);
             /* 提升出怪速度 */
 
-            // if(this.integral.value % 50 === 0&& this.integral.value!==0){
-            //     clearInterval(this.timer);
-            //     toast(`第${this.passIndex}关boss即将上场`);
-            //     this.passIndex++;
-            //     setTimeout(()=>{
-            //         this.createBoss();
-            //     },3000)
-            // }else{
-            if (this.integral.value < 5 || this.enemyRefreshSpeed < 100) return;
-            if (this.integral.value % 50 === 0) {
+            if (this.integral.value % 50 === 0 && this.integral.value !== 0) {
                 clearInterval(this.timer);
-                toast('\u8981\u52A0\u901F\u4E86');
-                this.createEnemy(this.enemyRefreshSpeed -= 28);
+                toast('\u7B2C' + this.passIndex + '\u5173boss\u5373\u5C06\u4E0A\u573A');
+                this.passIndex++;
+                setTimeout(function () {
+                    _this5.createBoss();
+                }, 3000);
+            } else {
+                //  if(this.integral.value <5 || this.enemyRefreshSpeed < 100) return
+                // if(this.integral.value % 50 === 0){
+                //     clearInterval(this.timer);
+                //     toast(`要加速了`);
+                //     this.createEnemy(this.enemyRefreshSpeed -= 28)
+                // } 
             }
-            // }
         }
         /* 生命值状态显示 */
 
@@ -403,14 +405,14 @@ var Main = function () {
     }, {
         key: 'gameover',
         value: function gameover() {
-            var _this5 = this;
+            var _this6 = this;
 
             /* 上报积分 */
             updataRankinglist(this.integral.value, this.userName, function (data) {
                 data.forEach(function (item, index) {
-                    if (_this5.integral.value === item.coin) {
+                    if (_this6.integral.value === item.coin) {
                         $('.val1').html(index + 1);
-                        $('.val2').html(data[index - 1].coin - _this5.integral.value);
+                        $('.val2').html(data[index - 1].coin - _this6.integral.value);
                     }
                 });
             });
@@ -422,11 +424,11 @@ var Main = function () {
                 // this.enemy_bulletArr.forEach( ( item,index) => {
                 //     this.ParticleContainer.removeChild(item);
                 // })
-                _this5.enemyArr.forEach(function (item, index) {
-                    _this5.container.removeChild(item);
+                _this6.enemyArr.forEach(function (item, index) {
+                    _this6.container.removeChild(item);
                 });
                 // this.enemy_bulletArr = [];
-                _this5.enemyArr = [];
+                _this6.enemyArr = [];
             });
             $('.show-list').click(function () {
                 $('.game-over').hide();
@@ -446,21 +448,21 @@ var Main = function () {
     }, {
         key: 'fire',
         value: function fire(px, py, sprite, bullet_X, bullet_Y, r) {
-            var _this6 = this;
+            var _this7 = this;
 
             this.enemyArr.forEach(function (item, index) {
                 var x = px || item.x + item.width / 2 + 10; //子弹初始X轴位置
                 var y = py || item.y + item.height / 2 + 40; //子弹初始y轴位置
                 var texture = sprite || new PIXI.Sprite(PIXI.loader.resources['images/bullet2.png'].texture);
-                var rotation = Math.atan2(x - (_this6.aricraftSprite.x + _this6.aricraftSprite.width / 2 + 10), y - (_this6.aricraftSprite.y + _this6.aricraftSprite.height / 2));
+                var rotation = Math.atan2(x - (_this7.aricraftSprite.x + _this7.aricraftSprite.width / 2 + 10), y - (_this7.aricraftSprite.y + _this7.aricraftSprite.height / 2));
                 var bulletX = bullet_X || -Math.cos(rotation) * 5;
                 var bulletY = bullet_Y || -Math.sin(rotation) * 5;
                 var _r = r || rotation;
-                var circle_bullet = _this6.bullet.init(texture, 20, 20, bulletX, bulletY, -_r);
+                var circle_bullet = _this7.bullet.init(texture, 20, 20, bulletX, bulletY, -_r);
                 circle_bullet.position.set(x, y);
-                _this6.enemy_bulletArr.push(circle_bullet);
-                _this6.ParticleContainer.addChild(circle_bullet);
-                _this6.container.addChild(circle_bullet);
+                _this7.enemy_bulletArr.push(circle_bullet);
+                _this7.ParticleContainer.addChild(circle_bullet);
+                _this7.container.addChild(circle_bullet);
             });
         }
         /* 重置 */
@@ -468,22 +470,22 @@ var Main = function () {
     }, {
         key: 'restart',
         value: function restart() {
-            var _this7 = this;
+            var _this8 = this;
 
             $('.game-over').slideUp(800, function () {
-                _this7.integral.health = 100;
-                _this7.integral.value = 0;
-                _this7.setIntegral(0);
-                _this7.createEnemy();
+                _this8.integral.health = 100;
+                _this8.integral.value = 0;
+                _this8.setIntegral(0);
+                _this8.createEnemy();
                 TweenMax.to('.health-value', 0.5, {
-                    width: _this7.integral.health + '%'
+                    width: _this8.integral.health + '%'
                 });
                 TweenMax.to('.health-value', 1, {
-                    background: 'rgb(' + _this7.healthColor.healthy.r + ',' + _this7.healthColor.healthy.g + ',' + _this7.healthColor.healthy.b + ')'
+                    background: 'rgb(' + _this8.healthColor.healthy.r + ',' + _this8.healthColor.healthy.g + ',' + _this8.healthColor.healthy.b + ')'
                 });
-                _this7.aricraftSprite.visible = true;
-                _this7.aricraftSprite.position.set($('.app').width() / 2 - _this7.aricraftSprite.width / 2, $('.app').height() - _this7.aricraftSprite.height - 30);
-                _this7.aricraft.setInvincible();
+                _this8.aricraftSprite.visible = true;
+                _this8.aricraftSprite.position.set($('.app').width() / 2 - _this8.aricraftSprite.width / 2, $('.app').height() - _this8.aricraftSprite.height - 30);
+                _this8.aricraft.setInvincible();
             });
         }
         /* 爆炸 */
@@ -491,82 +493,76 @@ var Main = function () {
     }, {
         key: 'boomPlay',
         value: function boomPlay(x, y) {
-            var _this8 = this;
+            var _this9 = this;
 
             var _boom = this.boom.play(x, y);
             this.container.addChild(_boom);
 
             setTimeout(function () {
-                _this8.container.removeChild(_boom);
+                _this9.container.removeChild(_boom);
             }, 1000);
         }
         /* boss战 */
-        // createBoss (){
-        //     let _enemy =  this.enemy.boss($('.app').width()/2 - 225/2,-150);
-        //     _enemy.tint = '0x'+Math.floor(Math.random() * 16777216).toString(16);
-        //     _enemy.isBoos = true;
-        //     setTimeout(()=>{
-        //         _enemy.vy = 0;
-        //         setTimeout(()=>{
-        //             _enemy.vx = 0.5;
-        //         },500)
-        //     },2400)
-        //     _enemy.timer = setInterval(() => {
-        //         let texture_A = PIXI.loader.resources['images/bullet2.png'].texture;
-        //         let texture_B = PIXI.loader.resources['images/bullet0.png'].texture;
-        //         var circle_bullet_A = this.bullet.init(
-        //             new PIXI.Sprite(texture_B),           //右侧主炮
-        //             20,20,4.1,-0.7,0
-        //         )  
-        //         circle_bullet_A.position.set(_enemy.x + _enemy.width/2 - 85,_enemy.y + _enemy.height/2 + 50);
-        //         this.enemy_bulletArr.push(circle_bullet_A);
-        //         this.container.addChild(circle_bullet_A);
 
-        //         var circle_bullet_B = this.bullet.init(   //右侧副炮
-        //             new PIXI.Sprite(texture_A),
-        //             20,20,4.1,-0.3,0
-        //         )  
-        //         circle_bullet_B.position.set(_enemy.x + _enemy.width/2 - 35,_enemy.y + _enemy.height/2 + 60);
-        //         this.enemy_bulletArr.push(circle_bullet_B);
-        //         this.ParticleContainer.addChild(circle_bullet_B);
+    }, {
+        key: 'createBoss',
+        value: function createBoss() {
+            var _this10 = this;
 
+            var _enemy = this.enemy.boss($('.app').width() / 2 - 225 / 2, -150);
+            _enemy.tint = '0x' + Math.floor(Math.random() * 16777216).toString(16);
+            _enemy.isBoos = true;
+            setTimeout(function () {
+                _enemy.vy = 0;
+                setTimeout(function () {
+                    _enemy.vx = 0.5;
+                }, 500);
+            }, 2400);
+            _enemy.timer = setInterval(function () {
+                var texture_A = PIXI.loader.resources['images/bullet2.png'].texture;
+                var texture_B = PIXI.loader.resources['images/bullet0.png'].texture;
+                var circle_bullet_A = _this10.bullet.init(new PIXI.Sprite(texture_B), //右侧主炮
+                20, 20, 4.1, -0.7, 0);
+                circle_bullet_A.position.set(_enemy.x + _enemy.width / 2 - 85, _enemy.y + _enemy.height / 2 + 50);
+                _this10.enemy_bulletArr.push(circle_bullet_A);
+                _this10.container.addChild(circle_bullet_A);
 
-        //         var circle_bullet_D = this.bullet.init(
-        //             new PIXI.Sprite(texture_A),           //左侧主炮
-        //             20,20,4.1,0.3,0
-        //         )  
-        //         circle_bullet_D.position.set(_enemy.x + _enemy.width/2 + 15,_enemy.y + _enemy.height/2 + 60);
-        //         this.enemy_bulletArr.push(circle_bullet_D);
-        //         this.ParticleContainer.addChild(circle_bullet_D);
+                var circle_bullet_B = _this10.bullet.init( //右侧副炮
+                new PIXI.Sprite(texture_A), 20, 20, 4.1, -0.3, 0);
+                circle_bullet_B.position.set(_enemy.x + _enemy.width / 2 - 35, _enemy.y + _enemy.height / 2 + 60);
+                _this10.enemy_bulletArr.push(circle_bullet_B);
+                _this10.ParticleContainer.addChild(circle_bullet_B);
 
+                var circle_bullet_D = _this10.bullet.init(new PIXI.Sprite(texture_A), //左侧主炮
+                20, 20, 4.1, 0.3, 0);
+                circle_bullet_D.position.set(_enemy.x + _enemy.width / 2 + 15, _enemy.y + _enemy.height / 2 + 60);
+                _this10.enemy_bulletArr.push(circle_bullet_D);
+                _this10.ParticleContainer.addChild(circle_bullet_D);
 
-        //         var circle_bullet_C = this.bullet.init(
-        //             new PIXI.Sprite(texture_B),           //左侧主炮
-        //             20,20,4.1,0.7,0
-        //         )  
-        //         circle_bullet_C.position.set(_enemy.x + _enemy.width/2 + 65,_enemy.y + _enemy.height/2 + 50);
-        //         this.enemy_bulletArr.push(circle_bullet_C);
-        //         this.container.addChild(circle_bullet_C);
-        //     }, 600);
-        //     this.container.addChild(_enemy);
-        //     this.enemyArr.push(_enemy);
+                var circle_bullet_C = _this10.bullet.init(new PIXI.Sprite(texture_B), //左侧主炮
+                20, 20, 4.1, 0.7, 0);
+                circle_bullet_C.position.set(_enemy.x + _enemy.width / 2 + 65, _enemy.y + _enemy.height / 2 + 50);
+                _this10.enemy_bulletArr.push(circle_bullet_C);
+                _this10.container.addChild(circle_bullet_C);
+            }, 600);
+            this.container.addChild(_enemy);
+            this.enemyArr.push(_enemy);
 
-        //     /* 地图预警 */
-        //     let params = {
-        //         color:1
-        //     }
-        //     TweenMax.to(params,0.6,{
-        //         color:0.6,
-        //         repeat:3,
-        //         // ease:Bounce.easeOut,
-        //         onUpdate:()=>{
-        //             this.mapInit.alpha = params.color;
-        //         },
-        //         yoyo:true,
-        //         yoyoEase:true
-        //     });
-        // }
-
+            /* 地图预警 */
+            var params = {
+                color: 1
+            };
+            TweenMax.to(params, 0.6, {
+                color: 0.6,
+                repeat: 3,
+                // ease:Bounce.easeOut,
+                onUpdate: function onUpdate() {
+                    _this10.mapInit.alpha = params.color;
+                },
+                yoyo: true,
+                yoyoEase: true
+            });
+        }
     }]);
 
     return Main;

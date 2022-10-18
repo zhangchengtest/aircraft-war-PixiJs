@@ -70,7 +70,7 @@ var Main = function () {
 
         this.enemy = new Enemy(); //敌军实例
         this.enemyArr = []; //敌军池
-        this.enemyRefreshSpeed = 500; //敌军刷新速度
+        this.enemyRefreshSpeed = 400; //敌军刷新速度
         this.integral = {
             value: 0, //积分
             health: 100 //健康值
@@ -359,11 +359,12 @@ var Main = function () {
             //         this.createBoss();
             //     },3000)
             // }else{
-            //     /* if(this.integral.value <5 || this.enemyRefreshSpeed < 510) return
-            //     if(this.integral.value % 8 === 0){
-            //         clearInterval(this.timer);
-            //         this.createEnemy(this.enemyRefreshSpeed -= 28)
-            //     } */
+            if (this.integral.value < 5 || this.enemyRefreshSpeed < 100) return;
+            if (this.integral.value % 50 === 0) {
+                clearInterval(this.timer);
+                toast('\u8981\u52A0\u901F\u4E86');
+                this.createEnemy(this.enemyRefreshSpeed -= 28);
+            }
             // }
         }
         /* 生命值状态显示 */

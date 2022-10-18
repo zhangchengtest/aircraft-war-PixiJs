@@ -192,8 +192,8 @@ class Main{
             this.bulletArr.forEach( bullet => {
                 if(item.health === 0) return;
                 if(hitTestRectangle(bullet,item)){
-                    this.ParticleContainer.removeChild(bullet);
-                    this.container.removeChild(item);
+                    // this.ParticleContainer.removeChild(bullet);
+                    // this.container.removeChild(item);
                     bullet.isDest = true;
                     item.health -= 1;
                 }
@@ -389,7 +389,7 @@ class Main{
         this.aricraftSprite.visible = false;
         clearInterval(this.timer);
         $('.game-over').slideDown(800,()=>{
-            
+            console.log('清空舞台')
             /* 清空舞台 */
             this.enemy_bulletArr.forEach( ( item,index) => {
                 this.ParticleContainer.removeChild(item);
@@ -437,6 +437,11 @@ class Main{
     /* 重置 */
     restart (){
         $('.game-over').slideUp(800 ,()=>{
+            console.log(this.enemy_bulletArr)
+            this.enemy_bulletArr.forEach( ( item,index) => {
+                this.ParticleContainer.removeChild(item);
+                this.container.removeChild(item);
+            })
             this.integral.health = 100;
             this.integral.value = 0;
             this.setIntegral(0);

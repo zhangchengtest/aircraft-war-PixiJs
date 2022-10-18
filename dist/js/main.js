@@ -195,8 +195,8 @@ var Main = function () {
                 _this2.bulletArr.forEach(function (bullet) {
                     if (item.health === 0) return;
                     if (hitTestRectangle(bullet, item)) {
-                        _this2.ParticleContainer.removeChild(bullet);
-                        _this2.container.removeChild(item);
+                        // this.ParticleContainer.removeChild(bullet);
+                        // this.container.removeChild(item);
                         bullet.isDest = true;
                         item.health -= 1;
                     }
@@ -421,7 +421,7 @@ var Main = function () {
             this.aricraftSprite.visible = false;
             clearInterval(this.timer);
             $('.game-over').slideDown(800, function () {
-
+                console.log('清空舞台');
                 /* 清空舞台 */
                 _this6.enemy_bulletArr.forEach(function (item, index) {
                     _this6.ParticleContainer.removeChild(item);
@@ -475,6 +475,11 @@ var Main = function () {
             var _this8 = this;
 
             $('.game-over').slideUp(800, function () {
+                console.log(_this8.enemy_bulletArr);
+                _this8.enemy_bulletArr.forEach(function (item, index) {
+                    _this8.ParticleContainer.removeChild(item);
+                    _this8.container.removeChild(item);
+                });
                 _this8.integral.health = 100;
                 _this8.integral.value = 0;
                 _this8.setIntegral(0);

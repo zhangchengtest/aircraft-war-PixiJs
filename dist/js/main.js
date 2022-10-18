@@ -425,11 +425,12 @@ var Main = function () {
                 /* 清空舞台 */
                 _this6.enemy_bulletArr.forEach(function (item, index) {
                     _this6.ParticleContainer.removeChild(item);
+                    _this6.container.removeChild(item);
                 });
                 _this6.enemyArr.forEach(function (item, index) {
                     _this6.container.removeChild(item);
                 });
-                _this6.enemy_bulletArr = [];
+
                 _this6.enemyArr = [];
             });
             $('.show-list').click(function () {
@@ -480,6 +481,7 @@ var Main = function () {
                     _this8.ParticleContainer.removeChild(item);
                     _this8.container.removeChild(item);
                 });
+                _this8.enemy_bulletArr = [];
                 _this8.integral.health = 100;
                 _this8.integral.value = 0;
                 _this8.setIntegral(0);

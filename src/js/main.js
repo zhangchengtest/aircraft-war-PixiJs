@@ -393,11 +393,12 @@ class Main{
             /* 清空舞台 */
             this.enemy_bulletArr.forEach( ( item,index) => {
                 this.ParticleContainer.removeChild(item);
+                this.container.removeChild(item);
             })
             this.enemyArr.forEach( ( item,index) => {
                 this.container.removeChild(item);
             })
-            this.enemy_bulletArr = [];
+          
             this.enemyArr = [];
         });
         $('.show-list').click(function(){
@@ -442,6 +443,7 @@ class Main{
                 this.ParticleContainer.removeChild(item);
                 this.container.removeChild(item);
             })
+            this.enemy_bulletArr = [];
             this.integral.health = 100;
             this.integral.value = 0;
             this.setIntegral(0);

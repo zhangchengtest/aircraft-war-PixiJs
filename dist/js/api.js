@@ -1,7 +1,7 @@
 'use strict';
 
 // const DOMAIN = 'http://47.94.17.117:3000/game'; 
-var DOMAIN = 'http://api.punengshuo.com/api/game';
+var DOMAIN = 'https://api.punengshuo.com/api/game';
 $(function () {
 
     getRankinglist();

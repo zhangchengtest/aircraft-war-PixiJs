@@ -147,7 +147,7 @@ body{
                 color:white;
             }
             >table{
-                @include wh(92%,88%);
+                @include wh(92%, 0);
                 margin:0 auto;
                 text-align: center;
                 td{

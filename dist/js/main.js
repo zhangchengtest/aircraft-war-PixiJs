@@ -421,13 +421,13 @@ var Main = function () {
             $('.game-over').slideDown(800, function () {
 
                 /* 清空舞台 */
-                // this.enemy_bulletArr.forEach( ( item,index) => {
-                //     this.ParticleContainer.removeChild(item);
-                // })
+                _this6.enemy_bulletArr.forEach(function (item, index) {
+                    _this6.ParticleContainer.removeChild(item);
+                });
                 _this6.enemyArr.forEach(function (item, index) {
                     _this6.container.removeChild(item);
                 });
-                // this.enemy_bulletArr = [];
+                _this6.enemy_bulletArr = [];
                 _this6.enemyArr = [];
             });
             $('.show-list').click(function () {
@@ -520,7 +520,7 @@ var Main = function () {
             }, 2400);
             _enemy.timer = setInterval(function () {
                 var texture_A = PIXI.loader.resources['images/bullet2.png'].texture;
-                var texture_B = PIXI.loader.resources['images/bullet0.png'].texture;
+                var texture_B = PIXI.loader.resources['images/bullet2.png'].texture;
                 var circle_bullet_A = _this10.bullet.init(new PIXI.Sprite(texture_B), //右侧主炮
                 20, 20, 4.1, -0.7, 0);
                 circle_bullet_A.position.set(_enemy.x + _enemy.width / 2 - 85, _enemy.y + _enemy.height / 2 + 50);

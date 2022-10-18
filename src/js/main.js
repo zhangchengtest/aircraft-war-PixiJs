@@ -387,13 +387,13 @@ class Main{
         $('.game-over').slideDown(800,()=>{
             
             /* 清空舞台 */
-            // this.enemy_bulletArr.forEach( ( item,index) => {
-            //     this.ParticleContainer.removeChild(item);
-            // })
+            this.enemy_bulletArr.forEach( ( item,index) => {
+                this.ParticleContainer.removeChild(item);
+            })
             this.enemyArr.forEach( ( item,index) => {
                 this.container.removeChild(item);
             })
-            // this.enemy_bulletArr = [];
+            this.enemy_bulletArr = [];
             this.enemyArr = [];
         });
         $('.show-list').click(function(){
@@ -470,7 +470,7 @@ class Main{
         },2400)
         _enemy.timer = setInterval(() => {
             let texture_A = PIXI.loader.resources['images/bullet2.png'].texture;
-            let texture_B = PIXI.loader.resources['images/bullet0.png'].texture;
+            let texture_B = PIXI.loader.resources['images/bullet2.png'].texture;
             var circle_bullet_A = this.bullet.init(
                 new PIXI.Sprite(texture_B),           //右侧主炮
                 20,20,4.1,-0.7,0

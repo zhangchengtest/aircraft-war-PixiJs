@@ -83,6 +83,7 @@ function getRankinglist(fn) {
     /* 获取排行榜数据 */
     $.get(DOMAIN + '/queryPlaneRank', function (res, status) {
         if (status === 'success' && res.code === 200) {
+            console.log(res);
             $('.ranking-list').html('');
             var wrapper_tr = '';
             res.data.forEach(function (item, index) {
